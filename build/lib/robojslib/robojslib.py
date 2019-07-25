@@ -89,6 +89,7 @@ class robojslib(object):
             print("checkbox gia selezionato")
         else:
             driver.execute_script("document.getElementById('"+arg+"').click()")
+            driver.execute_script("document.getElementById('"+arg+"').dispatchEvent(new Event('change'))")
             print("selezionato checkbox", arg)
     
     @keyword('Set responsive')
