@@ -9,7 +9,7 @@ setuptools.setup(
     author="Andrea Gubellini",
     author_email="agubellini@yahoo.com",
     description="A simple RobotFramework keyword library written using Vanilla/Python",
-    long_description=[],
+    long_description= long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/andreagubellini/RoboJSLib",
     packages=["robojslib"],
