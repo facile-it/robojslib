@@ -14,7 +14,7 @@ class FatalError(RuntimeError):
 class Error(RuntimeError):
     ROBOT_CONTINUE_ON_FAILURE = True
 
-class robojslib(object):
+class robojslib():
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "ROBOT"
 
