@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="robojslib",
-    version="0.3.1",
+    version="0.3.2",
     author="Andrea Gubellini",
     author_email="agubellini@yahoo.com",
     description="A simple RobotFramework keyword library written using Vanilla/Python",
