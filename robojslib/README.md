@@ -1,4 +1,4 @@
-# roboJSlib
+# robotJSlib
 ## How to use
 
 ###### Install with PIP:
