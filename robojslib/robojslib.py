@@ -8,6 +8,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from SeleniumLibrary.base import LibraryComponent
+
+
 
 class FatalError(RuntimeError):
     ROBOT_EXIT_ON_FAILURE = True
@@ -17,10 +20,11 @@ class Error(RuntimeError):
 class robojslib():
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "ROBOT"
+    
 
     @keyword('Vanilla click')
     def check(self, arg):
-        driver = BuiltIn().get_library_instance('SeleniumLibrary')._current_browser()
+        driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
         driver.execute_script("document.getElementById('"+arg+"').click()")
         if arg is None:
             raise(FatalError(arg, "non cliccabile"))
@@ -29,7 +33,7 @@ class robojslib():
 
     @keyword('Vanilla click by query selector')
     def vcbyqs(self, arg):
-        driver = BuiltIn().get_library_instance('SeleniumLibrary')._current_browser()
+        driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
         driver.execute_script("document.querySelector('"+arg+"').click()")
         if arg is None:
             raise(FatalError(arg, "non cliccabile"))
@@ -38,7 +42,7 @@ class robojslib():
 
     @keyword('Check title')
     def func(self):
-        driver = BuiltIn().get_library_instance('SeleniumLibrary')._current_browser()
+        driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
         title = driver.title
         if  "http" not in title:
             print('titolo della pagina:', title )
@@ -47,7 +51,7 @@ class robojslib():
 
     @keyword('Modify url string')
     def modifyurl(self, arg1, arg2):
-        driver = BuiltIn().get_library_instance('SeleniumLibrary')._current_browser()
+        driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
         url = driver.current_url
         if arg1 in url:
             driver.delete_all_cookies()
@@ -59,19 +63,19 @@ class robojslib():
 
     @keyword('Vanilla input')
     def gen(self, arg1, arg2):
-        driver = BuiltIn().get_library_instance('SeleniumLibrary')._current_browser()
+        driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
         driver.execute_script("document.getElementById('"+arg1+"').value = '"+arg2+"'")
         driver.execute_script("document.getElementById('"+arg1+"').dispatchEvent(new Event('change'))")
 
     @keyword('Vanilla input by query selector')
     def genqs(self, arg1, arg2):
-        driver = BuiltIn().get_library_instance('SeleniumLibrary')._current_browser()
+        driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
         driver.execute_script("document.querySelector('"+arg1+"').value = '"+arg2+"'")
         driver.execute_script("document.querySelector('"+arg1+"').dispatchEvent(new Event('change'))")
 
     @keyword('Insert phone nr')
     def Nr(self, arg):
-        driver = BuiltIn().get_library_instance('SeleniumLibrary')._current_browser()
+        driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
         nr = random.randint(0, 10000000)
         tel = "351" + str(nr)
         print(tel, "numero generato")
@@ -83,7 +87,7 @@ class robojslib():
     
     @keyword('Checkbox control')
     def cc(self, arg):
-        driver = BuiltIn().get_library_instance('SeleniumLibrary')._current_browser()
+        driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
         check = driver.find_element_by_id(arg).is_selected()
         if check is True:
             print("checkbox gia selezionato")
@@ -94,7 +98,7 @@ class robojslib():
     
     @keyword('Set responsive')
     def tr(self, arg):
-        driver = BuiltIn().get_library_instance('SeleniumLibrary')._current_browser()
+        driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
         if arg == "Mobile":
             driver.set_window_size(360,640)
         elif arg == "Tablet":
@@ -104,7 +108,7 @@ class robojslib():
 
     @keyword('Wait until title contains')
     def slUUc(self, arg):
-        driver = BuiltIn().get_library_instance('SeleniumLibrary')._current_browser()
+        driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
         url = driver.current_url
         wait = WebDriverWait(driver, 20)
         action = wait.until(EC.title_contains(arg))
@@ -115,12 +119,12 @@ class robojslib():
     
     @keyword('Open new tab')
     def ont(self, arg):
-        driver = BuiltIn().get_library_instance('SeleniumLibrary')._current_browser()
+        driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
         driver.execute_script("window.open('"+arg+"', '_blank');")
 
     @keyword('Check if visible and click')
     def cvc(self, arg):
-        driver = BuiltIn().get_library_instance('SeleniumLibrary')._current_browser()
+        driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
         elem = driver.find_element_by_id(arg)
         if elem.is_displayed():
             elem.click()
@@ -129,7 +133,7 @@ class robojslib():
     
     @keyword('Check if visible and click by class')
     def cvcbc(self, arg):
-        driver = BuiltIn().get_library_instance('SeleniumLibrary')._current_browser()
+        driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
         elem = driver.find_elements_by_class_name(arg)
         if elem.is_displayed():
             elem.click()
@@ -138,7 +142,7 @@ class robojslib():
 
     @keyword('Check if visible and click by css selector')
     def cvcbq(self, arg):
-        driver = BuiltIn().get_library_instance('SeleniumLibrary')._current_browser()
+        driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
         elem = driver.find_element_by_css_selector(arg)
         if elem.is_displayed():
             elem.click()
