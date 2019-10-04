@@ -40,4 +40,4 @@ for BuiltIn lib
 |Check if visible and click | arg: id| Checks if an element is displayed and clicks it. Otherwise, it skips.
 |Check if visible and click by class|arg: class| Checks if an element by class is displayed and clicks it. Otherwise, it skips.
 |Check if visible and click by css selector|arg: css selector| Checks if an element by css selector is displayed and clicks it. Otherwise, it skips.
-|Element value should not be empty||
+|Element value should not be empty | Element ID | Grabs element value and returns a FatalError in case is empty
