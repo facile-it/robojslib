@@ -157,4 +157,4 @@ class robojslib():
         if val != '':
             pass
         else:
-            raise(FatalError(sys.__stdout__.write('Got value %s\n' % val)))
+            raise(FatalError(sys.__stdout__.write('Value is empty %s\n' % val)))
