@@ -148,3 +148,13 @@ class robojslib():
             elem.click()
         else:
             print("elemento non visibile", arg)
+
+    @keyword('Element value should not be empty')
+    def evs(self, arg):
+        driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
+        elem = driver.find_element_by_id(arg)
+        val = elem.get_attribute("value")
+        if val != '':
+            pass
+        else:
+            raise(FatalError(sys.__stdout__.write('Got value %s\n' % val)))
