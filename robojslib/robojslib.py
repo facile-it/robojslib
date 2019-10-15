@@ -23,81 +23,102 @@ class robojslib():
     
 
     @keyword('Vanilla click')
-    def check(self, arg):
+    def check(self, elementId):
+        """Clicks an element using Id selector method
+        """
         driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
-        driver.execute_script("document.getElementById('"+arg+"').click()")
-        if arg is None:
-            raise(FatalError(arg, "non cliccabile"))
+        driver.execute_script("document.getElementById('"+elementId+"').click()")
+        if elementId is None:
+            raise(FatalError(elementId, "not clickable"))
         else:
-            print("selezionato", arg)
+            print("selected", elementId)
 
     @keyword('Vanilla click by query selector')
-    def vcbyqs(self, arg):
+    def vcbyqs(self, querySelector):
+        """Clicks an element using querySelector method
+        """
         driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
-        driver.execute_script("document.querySelector('"+arg+"').click()")
-        if arg is None:
-            raise(FatalError(arg, "non cliccabile"))
+        driver.execute_script("document.querySelector('"+querySelector+"').click()")
+        if querySelector is None:
+            raise(FatalError(querySelector, "not clickable"))
         else:
-            print("selezionato", arg)
+            print("selected", querySelector)
 
     @keyword('Check title')
     def func(self):
+        """Checks wether the title contains a valid string. If string contains a raw url it blocks execution.
+        """
         driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
         title = driver.title
         if  "http" not in title:
-            print('titolo della pagina:', title )
+            print('title:', title )
         else:
-            raise(FatalError("errore, verificare titolo pagina"))
+            raise(FatalError("Error, title is ", title))
 
     @keyword('Modify url string')
-    def modifyurl(self, arg1, arg2):
+    def modifyurl(self, url_to_be_substituted, url_substitute):
+        """Substitute "url_to_be_substituted" with "url_substitute". The entire url or a string portion may be substituted. This keyword deletes cookies to avoid replacement issues.
+        """
         driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
         url = driver.current_url
-        if arg1 in url:
+        if url_to_be_substituted in url:
             driver.delete_all_cookies()
-            newUrl = url.replace(arg1, arg2)
+            newUrl = url.replace(url_to_be_substituted, url_substitute)
             driver.get(newUrl)
-            print("stringa ", arg1, " sostituita")
+            print("stringa ", url_to_be_substituted, " substituted")
         else:
-            raise(Error(arg1, " non sostituibile, verificare"))
+            raise(Error(url_to_be_substituted, " not substituted. Verify."))
 
     @keyword('Vanilla input')
-    def gen(self, arg1, arg2):
+    def gen(self, elementId, value):
+        """Locates an element through Id selector and inputs a value. This keyword runs .dispatchEvent('change') to trigger js events.
+        """
         driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
-        driver.execute_script("document.getElementById('"+arg1+"').value = '"+arg2+"'")
-        driver.execute_script("document.getElementById('"+arg1+"').dispatchEvent(new Event('change'))")
+        driver.execute_script("document.getElementById('"+elementId+"').value = '"+value+"'")
+        driver.execute_script("document.getElementById('"+elementId+"').dispatchEvent(new Event('change'))")
 
     @keyword('Vanilla input by query selector')
-    def genqs(self, arg1, arg2):
+    def genqs(self, querySelector, value):
+        """Locates an element through queryselector and inputs a value. This keyword runs .dispatchEvent('change') to trigger js events.
+        """
         driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
-        driver.execute_script("document.querySelector('"+arg1+"').value = '"+arg2+"'")
-        driver.execute_script("document.querySelector('"+arg1+"').dispatchEvent(new Event('change'))")
+        driver.execute_script("document.querySelector('"+querySelector+"').value = '"+value+"'")
+        driver.execute_script("document.querySelector('"+querySelector+"').dispatchEvent(new Event('change'))")
 
     @keyword('Insert phone nr')
-    def Nr(self, arg):
+    def Nr(self, elementId):
+        """Generates an italian formatted random phone number and inputs it in the given locator.
+        """
         driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
         nr = random.randint(0, 10000000)
         tel = "351" + str(nr)
-        print(tel, "numero generato")
-        if arg is not None:
-            driver.execute_script("document.getElementById('"+arg+"').value = '"+tel+"'")
-            print('numero di telefono generato ', tel, 'inserito in ', arg)
+        print(tel, "generated")
+        if elementId is not None:
+            driver.execute_script("document.getElementById('"+elementId+"').value = '"+tel+"'")
+            print('phone nr. generated ', tel, 'inputed in ', elementId)
         else:
-            print("id non valido")
+            raise(FatalError("id not valid"))
     
     @keyword('Checkbox control')
-    def cc(self, arg):
+    def cc(self, elementId):
+        """Controls whether the given checkbox is selected, if it's not it will be clicked.
+        """
         driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
-        check = driver.find_element_by_id(arg).is_selected()
+        check = driver.find_element_by_id(elementId).is_selected()
         if check is True:
-            print("checkbox gia selezionato")
+            raise(Error('checkbox already selected'))
         else:
-            driver.execute_script("document.getElementById('"+arg+"').click()")
-            driver.execute_script("document.getElementById('"+arg+"').dispatchEvent(new Event('change'))")
-            print("selezionato checkbox", arg)
+            driver.execute_script("document.getElementById('"+elementId+"').click()")
+            driver.execute_script("document.getElementById('"+elementId+"').dispatchEvent(new Event('change'))")
+            print("checkbox selected ", elementId)
     
     @keyword('Set responsive')
     def tr(self, arg):
+        """Sets window size in the given resolution. 
+            Resolutions:
+            Mobile = 360,640
+            Tablet = 768, 1024
+        """
         driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
         if arg == "Mobile":
             driver.set_window_size(360,640)
@@ -107,52 +128,64 @@ class robojslib():
             raise(Error("missing argument"))   
 
     @keyword('Wait until title contains')
-    def slUUc(self, arg):
+    def slUUc(self, value):
+        """Waits until title contains the given string
+        """
         driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
         url = driver.current_url
         wait = WebDriverWait(driver, 20)
-        action = wait.until(EC.title_contains(arg))
+        action = wait.until(EC.title_contains(value))
         if action:
-            print(arg, "e' contenuto in url")
+            print(value, "is contained in title")
         else:
-           raise(FatalError(arg, "non e' contenuto in url"))
+           raise(FatalError(value, " is not contained in title"))
     
     @keyword('Open new tab')
-    def ont(self, arg):
+    def ont(self, url):
+        """Opens a new browser tab to the given url
+        """
         driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
-        driver.execute_script("window.open('"+arg+"', '_blank');")
+        driver.execute_script("window.open('"+url+"', '_blank');")
 
     @keyword('Check if visible and click')
-    def cvc(self, arg):
+    def cvc(self, elementId):
+        """checks if the given element Id is visible then clicks it
+        """
         driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
-        elem = driver.find_element_by_id(arg)
+        elem = driver.find_element_by_id(elementId)
         if elem.is_displayed():
             elem.click()
         else:
-            print("elemento non visibile", arg)
+            raise(Error("element not visible", elementId))
     
     @keyword('Check if visible and click by class')
-    def cvcbc(self, arg):
+    def cvcbc(self, elementClass):
+        """checks if the given element class is visible then clicks it
+        """
         driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
-        elem = driver.find_elements_by_class_name(arg)
+        elem = driver.find_elements_by_class_name(elementClass)
         if elem.is_displayed():
             elem.click()
         else:
-            print("elemento non visibile", arg)
+            raise(Error("element not visible", elementClass))
 
-    @keyword('Check if visible and click by css selector')
-    def cvcbq(self, arg):
+    @keyword('Check if visible and click by query selector')
+    def cvcbq(self, querySelector):
+        """checks if the given element query selector is visible then clicks it
+        """
         driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
-        elem = driver.find_element_by_css_selector(arg)
+        elem = driver.find_element_by_css_selector(querySelector)
         if elem.is_displayed():
             elem.click()
         else:
-            print("elemento non visibile", arg)
+            raise(Error("element not visible ", querySelector))
 
     @keyword('Element value should not be empty')
-    def evs(self, arg):
+    def evs(self, elementId):
+        """checks that elementId value is not empty set and contains any value
+        """
         driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
-        elem = driver.find_element_by_id(arg)
+        elem = driver.find_element_by_id(elementId)
         val = elem.get_attribute("value")
         if val != '':
             pass
