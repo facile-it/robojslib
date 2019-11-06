@@ -9,6 +9,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from SeleniumLibrary.base import LibraryComponent
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
 
 
@@ -112,20 +114,30 @@ class robojslib():
             driver.execute_script("document.getElementById('"+elementId+"').dispatchEvent(new Event('change'))")
             print("checkbox selected ", elementId)
     
-    @keyword('Set responsive')
-    def tr(self, arg):
-        """Sets window size in the given resolution. 
-            Resolutions:
-            Mobile = 360,640
-            Tablet = 768, 1024
+    @keyword('Open responsive browser')
+    def tr(self, deviceName):
+        """Opens the brwoser and uses emulation devTool to simulate different devices.
+            Nexus5 = 360, 640
+            iPhone8 = 375, 667
+            GalaxyS8 = 360, 740
+            iPad = 768, 1024
         """
-        driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
-        if arg == "Mobile":
-            driver.set_window_size(360,640)
-        elif arg == "Tablet":
-            driver.set_window_size(768, 1024)
-        elif arg is None:
-            raise(Error("missing argument"))   
+        if deviceName != None:
+            if deviceName == "Nexus5":
+                mobile_emulation = { "deviceName": "Nexus 5" }
+            elif deviceName == "iPhone8":
+                mobile_emulation = { "deviceName": "iPhone 6/7/8" }
+            elif deviceName == "iPad":
+                mobile_emulation = { "deviceName": "iPad" }
+            elif deviceName == "GalaxyS8":
+                mobile_emulation = {
+                    "deviceMetrics": { "width": 360, "height": 740, "pixelRatio": 4.0 }
+                    }
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)
+            driver = BuiltIn().get_library_instance('SeleniumLibrary').create_webdriver('Chrome', chrome_options=chrome_options)
+        elif deviceName is None:
+            raise(Error("missing argument"))
 
     @keyword('Wait until title contains')
     def slUUc(self, value):
