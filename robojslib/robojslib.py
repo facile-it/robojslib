@@ -113,18 +113,40 @@ class robojslib():
             print("checkbox selected ", elementId)
     
     @keyword('Set responsive')
-    def tr(self, arg):
+    def tr(self, deviceName):
         """Sets window size in the given resolution. 
             Resolutions:
-            Mobile = 360,640
-            Tablet = 768, 1024
+            Nexus5 = 360, 640
+            iPhone8 = 375, 667
+            GalaxyS8 = 360, 740
+            iPad = 768, 1024
         """
-        driver = BuiltIn().get_library_instance('SeleniumLibrary').driver
-        if arg == "Mobile":
-            driver.set_window_size(360,640)
-        elif arg == "Tablet":
-            driver.set_window_size(768, 1024)
-        elif arg is None:
+        from selenium import webdriver
+        if deviceName == "Nexus5":
+            mobile_emulation = { "deviceName": "Nexus 5" }
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)
+            driver = BuiltIn().get_library_instance('SeleniumLibrary').create_webdriver('Chrome', chrome_options=chrome_options)
+            #driver = BuiltIn().get_library_instance('SeleniumLibrary').create_webdriver('Chrome', chrome_options=chrome_options)
+        elif deviceName == "iPhone8":
+            mobile_emulation = { "deviceName": "iPhone 6/7/8" }
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)
+            driver = BuiltIn().get_library_instance('SeleniumLibrary').create_webdriver('Chrome', chrome_options=chrome_options)
+        elif deviceName == "iPad":
+            mobile_emulation = { "deviceName": "iPad" }
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)
+            driver = BuiltIn().get_library_instance('SeleniumLibrary').create_webdriver('Chrome', chrome_options=chrome_options)
+        elif deviceName == "GalaxyS8":
+            from selenium.webdriver.chrome.options import Options
+            mobile_emulation = {
+                "deviceMetrics": { "width": 360, "height": 740, "pixelRatio": 4.0 }
+                }
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)
+            driver = BuiltIn().get_library_instance('SeleniumLibrary').create_webdriver('Chrome', chrome_options=chrome_options)
+        elif deviceName is None:
             raise(Error("missing argument"))   
 
     @keyword('Wait until title contains')
