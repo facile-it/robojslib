@@ -1,13 +1,8 @@
-*** Settings ***
-Documentation    		Generic keywords.
-...  			 		These keywords should be used across different areas.
-Resource         		variables.robot
-
 *** Keywords ***
 I open mobile browser
 	[Documentation]		Used to open the browser and setting it to mobile responsive.
 	[Arguments]			${device}
-	Open Browser                        		about:blank             		Chrome
+	#Open Browser 				blank 				Chrome
 	Set responsive								${device}
 
 I enter Google URL
@@ -34,4 +29,3 @@ I select first result
 Search results is displayed
 	[Documentation]		Used to check I land on results page.
 	Wait Until Element Is Visible    			id:gsr
-
