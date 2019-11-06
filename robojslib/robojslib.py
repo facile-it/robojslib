@@ -114,10 +114,9 @@ class robojslib():
             driver.execute_script("document.getElementById('"+elementId+"').dispatchEvent(new Event('change'))")
             print("checkbox selected ", elementId)
     
-    @keyword('Set responsive')
+    @keyword('Open responsive browser')
     def tr(self, deviceName):
-        """Sets window size in the given resolution. 
-            Resolutions:
+        """Opens the brwoser and uses emulation devTool to simulate different devices.
             Nexus5 = 360, 640
             iPhone8 = 375, 667
             GalaxyS8 = 360, 740
