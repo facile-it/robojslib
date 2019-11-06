@@ -9,6 +9,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from SeleniumLibrary.base import LibraryComponent
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
 
 
@@ -121,33 +123,22 @@ class robojslib():
             GalaxyS8 = 360, 740
             iPad = 768, 1024
         """
-        from selenium import webdriver
-        if deviceName == "Nexus5":
-            mobile_emulation = { "deviceName": "Nexus 5" }
-            chrome_options = webdriver.ChromeOptions()
-            chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)
-            driver = BuiltIn().get_library_instance('SeleniumLibrary').create_webdriver('Chrome', chrome_options=chrome_options)
-            #driver = BuiltIn().get_library_instance('SeleniumLibrary').create_webdriver('Chrome', chrome_options=chrome_options)
-        elif deviceName == "iPhone8":
-            mobile_emulation = { "deviceName": "iPhone 6/7/8" }
-            chrome_options = webdriver.ChromeOptions()
-            chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)
-            driver = BuiltIn().get_library_instance('SeleniumLibrary').create_webdriver('Chrome', chrome_options=chrome_options)
-        elif deviceName == "iPad":
-            mobile_emulation = { "deviceName": "iPad" }
-            chrome_options = webdriver.ChromeOptions()
-            chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)
-            driver = BuiltIn().get_library_instance('SeleniumLibrary').create_webdriver('Chrome', chrome_options=chrome_options)
-        elif deviceName == "GalaxyS8":
-            from selenium.webdriver.chrome.options import Options
-            mobile_emulation = {
-                "deviceMetrics": { "width": 360, "height": 740, "pixelRatio": 4.0 }
-                }
+        if deviceName != None:
+            if deviceName == "Nexus5":
+                mobile_emulation = { "deviceName": "Nexus 5" }
+            elif deviceName == "iPhone8":
+                mobile_emulation = { "deviceName": "iPhone 6/7/8" }
+            elif deviceName == "iPad":
+                mobile_emulation = { "deviceName": "iPad" }
+            elif deviceName == "GalaxyS8":
+                mobile_emulation = {
+                    "deviceMetrics": { "width": 360, "height": 740, "pixelRatio": 4.0 }
+                    }
             chrome_options = webdriver.ChromeOptions()
             chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)
             driver = BuiltIn().get_library_instance('SeleniumLibrary').create_webdriver('Chrome', chrome_options=chrome_options)
         elif deviceName is None:
-            raise(Error("missing argument"))   
+            raise(Error("missing argument"))
 
     @keyword('Wait until title contains')
     def slUUc(self, value):

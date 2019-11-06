@@ -2,7 +2,7 @@
 I open mobile browser
 	[Documentation]		Used to open the browser and setting it to mobile responsive.
 	[Arguments]			${device}
-	#Open Browser 				blank 				Chrome
+	#Open Browser 				about:blank 				Chrome
 	Set responsive								${device}
 
 I enter Google URL
