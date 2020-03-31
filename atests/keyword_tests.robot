@@ -62,30 +62,72 @@ tests mobile
     facile_toolkit.Open mobile browser   ${url}  iPhone X
 
 tests field_returns keyword INVALID - PASS
+    [Documentation]
+    ...     Given I input an invalid value on a field
+    ...     and I set "Field returns" invalid
+    ...     and class "err wrong" appears in page source
+    ...     then test should be passed
     facile_toolkit.Open browser  ${url}   Chrome
     Input Text  ASF_nascita_data  1
     Press Keys  ASF_nascita_data  TAB
     field returns  invalid
 
 tests field_returns keyword INVALID - FAIL
+    [Documentation]
+    ...     Given I input a valid value on a field
+    ...     and I set "Field returns" invalid
+    ...     and class "err wrong" doesn't appear in page source
+    ...     then test should be failed
     facile_toolkit.Open browser  ${url}   Chrome
     Input Text  ASF_nascita_data  01111992
     Press Keys  ASF_nascita_data  TAB
     Run Keyword And Expect Error  *   field returns  invalid
 
 tests field_returns keyword VALID - PASS
-    [Tags]  test
+    [Documentation]
+    ...     Given I input a valid value on a field
+    ...     and I set "Field returns" valid
+    ...     and class "err wrong" doesn't appear in page source
+    ...     then test should be passed
     facile_toolkit.Open browser  ${url}   Chrome
     Input Text  ASF_nascita_data  01111992
     Press Keys  ASF_nascita_data  TAB
     field returns  valid
 
 tests field_returns keyword VALID - FAIL
-    [Tags]  test
+    [Documentation]
+    ...     Given I input an invalid value on a field
+    ...     and I set "Field returns" valid
+    ...     and class "err wrong" appears in page source
+    ...     then test should be failed
     facile_toolkit.Open browser  ${url}   Chrome
     Input Text  ASF_nascita_data  01
     Press Keys  ASF_nascita_data  TAB
     Run Keyword And Expect Error  *   field returns  valid
+
+tests DOM is loaded keyword
+    [Documentation]
+    ...     Given I land on ${url}
+    ...     and dom is loaded before the timeout
+    ...     then test is passed
+    facile_toolkit.Open browser  ${url}   Chrome
+    dom is loaded   5s
+
+tests checkpoint - PASS
+    [Documentation]
+    ...     Given I land on ${url}
+    ...     And I checkpoint on an existing page object
+    ...     then test is passed
+    facile_toolkit.Open browser  ${url}   Chrome
+    checkpoint   ASF_nascita_data
+
+tests checkpoint - FAIL
+    [Documentation]
+    ...     Given I land on ${url}
+    ...     And I checkpoint on a Non-existing page object
+    ...     then test is failed
+    facile_toolkit.Open browser  ${url}   Chrome
+    Run Keyword And Expect Error  *  checkpoint   ASF_not_existing_locator   5s
 
 
 ***Keywords***

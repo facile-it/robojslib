@@ -5,6 +5,8 @@ from robot.libraries.BuiltIn import BuiltIn
 from SeleniumLibrary import SeleniumLibrary
 from SeleniumLibrary.keywords import BrowserManagementKeywords as BM
 from SeleniumLibrary import ElementKeywords
+from SeleniumLibrary.keywords import WaitingKeywords as WK
+from SeleniumLibrary.keywords import *
 from json import dumps
 from selenium.webdriver.support.ui import WebDriverWait 
 from selenium.webdriver.support import expected_conditions as EC 
@@ -121,3 +123,23 @@ class facile_toolkit(object):
     def scroll(self, range):
         driver = BuiltIn().get_library_instance('SeleniumLibrary')
         driver.execute_javascript("document.documentElement.scrollTop = "+range+";")
+
+    @keyword
+    def dom_is_loaded(self, timeout="5s"):
+        driver = BuiltIn().get_library_instance('SeleniumLibrary')
+        driver.wait_for_condition("return document.readyState=='complete'", timeout)
+
+    @keyword
+    def checkpoint(self, locator, timeout="60s"):
+        """Waits for a maximum time, defined by timeout argument (default=60s),
+        until until a webelement (defined by a locator) is contained on the page and displayed
+        """
+        driver = BuiltIn().get_library_instance('SeleniumLibrary')
+        facile_toolkit().dom_is_loaded(timeout)
+        driver.wait_until_page_contains_element(locator, timeout)
+        driver.wait_until_element_is_visible(locator, timeout)
+        # log_preventivo = BuiltIn().run_keyword_and_return_status("should_contain", locator, "AS_result_content", None, True, False)
+        # if log_preventivo:
+        #     print(log_preventivo)
+
+    
